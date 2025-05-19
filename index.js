@@ -361,15 +361,14 @@ class LinkedList {
 
   linkedListReverse() {
     let prev = null;
-    let curr = this.head; 
-    while(curr) {
+    let curr = this.head;
+    while (curr) {
       let next = curr.next;
       curr.next = prev;
       prev = current;
       current = next;
     }
     this.head = prev;
-
   }
 
   append(value) {
@@ -399,7 +398,6 @@ class LinkedList {
       console.log("LinkedList :", listValue);
     }
   }
-
 }
 
 const linkedlist = new LinkedList();
@@ -523,7 +521,6 @@ list.removeFromEnd();
 list.print();
 */
 
-
 // Linkedlist with stack
 class LinkedListStack {
   constructor() {
@@ -531,19 +528,85 @@ class LinkedListStack {
   }
 
   push(value) {
-    this.list.append(value)
+    this.list.append(value);
   }
 
   pop() {
     this.list.removeFromFront();
-  } 
+  }
 
   peek() {
-    return this.head.value()
+    return this.head.value();
   }
 }
 
-// Algorithams
+// Hash Table
+// Has table must suport 3 operation,
+// Set to store a key value pair , Get to retrieve a key value pair
+// Remove to delete a key value pair
+// Hashing Function to convert a string key to a numeric index
+
+class HashTable {
+  constructor(size) {
+    this.table = new Array(size);
+    this.size = size;
+  }
+
+  hash(key) {
+    let total = 0;
+    for (let i = 0; i < key.length; i++) {
+      total += key.charCodeAt(i);
+    }
+
+    return total % this.size;
+  }
+  set(key, value) {
+    debugger;
+    const index = this.hash(key);
+    // this.table[index] = value;
+    // we store reference to the value
+    const bucket = this.table[index];
+    if(!bucket) {
+      bucket = [[key,value]]
+    } else {
+      // Find the array where the same key exist.
+      const sameKeyItem  = bucket.find(item => item[0] === key);
+      if(sameKeyItem) {
+        sameKeyItem[1] = value;
+      } else {
+        bucket.push([key, value])
+      }
+    }
+  }
+
+  get(key) {
+    const index = this.hash(key);
+    return this.table[index];
+  }
+
+  delete(key) {
+    const index = this.hash(key);
+    this.table[index] = undefined;
+  }
+
+  display() {
+    for (const key in this.table) {
+      console.log(key, this.table[key]);
+    }
+  }
+
+}
+
+const hashTable = new HashTable(50);
+hashTable.set("ranga", "handsome");
+hashTable.set("ranga", "32");
+
+// Ablove will overide the same key .. to do this we need to reoslve collison to avoid data loss.
+// To do this instead of store the data as array and each data with array of Ky. value pair
+hashTable.display();
+
+
+  // Algorithams
 
 function binarySearch(array, leftIndex, rightIndex, target) {
   if (leftIndex > rightIndex) {
@@ -682,4 +745,3 @@ function climbingStaircase2(n) {
 console.log("climbingStaircase", climbingStaircase(10));
 console.log("climbingStaircase", climbingStaircase2(10));
 console.log("climbingStaircase", climbingStaircase2(5));
- 
